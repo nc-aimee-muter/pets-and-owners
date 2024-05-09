@@ -1,0 +1,16 @@
+{
+  "GET /api": {
+    "description": "serves up a json representation of all the available endpoints of the api"
+  },
+  "GET /api/owners/:id": {
+    "description": "servers an object of the requested owner",
+    "idFormatExamples": "o1, o12",
+    "exampleResponse": {
+      "owner": {
+        "id": "o1",
+        "name": "Steve",
+        "age": 28
+      }
+    }
+  }
+}
