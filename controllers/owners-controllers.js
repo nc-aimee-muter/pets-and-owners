@@ -1,4 +1,4 @@
-const { fetchOwnerById } = require("../models/owners-models");
+const { fetchOwnerById, fetchOwners } = require("../models/owners-models");
 
 exports.getOwnerById = async (request, response, next) => {
   const id = request.params.id.toLowerCase();
@@ -18,4 +18,9 @@ exports.getOwnerById = async (request, response, next) => {
       message: "No owner matching the provided ID",
     });
   }
+};
+
+exports.getOwners = async (request, response, next) => {
+  const owners = await fetchOwners();
+  response.status(200).send({ owners });
 };

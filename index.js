@@ -2,7 +2,7 @@ const {
   allOtherEndpoints,
   getApiInfo,
 } = require("./controllers/api-controllers");
-const { getOwnerById } = require("./controllers/owners-controllers");
+const { getOwnerById, getOwners } = require("./controllers/owners-controllers");
 const { makeRainbow, styleError } = require("./utils/utils");
 
 module.exports = {
@@ -11,4 +11,5 @@ module.exports = {
   makeRainbow,
   styleError,
   getOwnerById,
+  getOwners,
 };
