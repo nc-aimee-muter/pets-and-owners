@@ -5,7 +5,7 @@ const { makeRainbow, styleError } = require("../index");
 const endpointsData = require("../endpoints.json");
 const app = require("../app");
 
-const numberOfTests = 6;
+const numberOfTests = 7;
 let numberOfRefreshes = 0;
 
 beforeEach(async () => {
@@ -72,6 +72,40 @@ describe("app.js", () => {
         body: { message },
       } = await request(app).get("/api/owners/owner1").expect(400);
       expect(message).toBe("Invalid ID");
+    });
+  });
+  describe("GET /owners", () => {
+    test("GET 200: responds to the client with an array containing every owner object", async () => {
+      const {
+        body: { owners },
+      } = await request(app).get("/owners").expect(200);
+      expect(owners).toEqual([
+        {
+          id: "o1",
+          name: "Steve",
+          age: 28,
+        },
+        {
+          id: "o2",
+          name: "Lucy",
+          age: 19,
+        },
+        {
+          id: "o3",
+          name: "Gavin",
+          age: 33,
+        },
+        {
+          id: "o4",
+          name: "Malcolm",
+          age: 92,
+        },
+        {
+          id: "o5",
+          name: "Ronald",
+          age: 57,
+        },
+      ]);
     });
   });
 });

@@ -12,5 +12,22 @@
         "age": 28
       }
     }
+  },
+  "GET /owners": {
+    "description": "serves an array of all owners",
+    "exampleResponse": {
+      "owners": [
+        {
+          "id": "o1",
+          "name": "Steve",
+          "age": 28
+        },
+        {
+          "id": "o2",
+          "name": "Lucy",
+          "age": 19
+        }
+      ]
+    }
   }
 }
