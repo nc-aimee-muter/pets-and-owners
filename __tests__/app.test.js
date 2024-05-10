@@ -5,7 +5,7 @@ const { makeRainbow, styleError } = require("../index");
 const endpointsData = require("../endpoints.json");
 const app = require("../app");
 
-const numberOfTests = 7;
+const numberOfTests = 10;
 let numberOfRefreshes = 0;
 
 beforeEach(async () => {
@@ -55,7 +55,7 @@ describe("app.js", () => {
         age: 92,
       });
     });
-    test("GET 200: reponds to the client with the owner matching the provided id despite casing", async () => {
+    test("GET 200: responds to the client with the owner matching the provided id despite casing", async () => {
       const {
         body: { owner },
       } = await request(app).get("/api/owners/O2").expect(200);
@@ -78,7 +78,7 @@ describe("app.js", () => {
     test("GET 200: responds to the client with an array containing every owner object", async () => {
       const {
         body: { owners },
-      } = await request(app).get("/owners").expect(200);
+      } = await request(app).get("/api/owners").expect(200);
       expect(owners).toEqual([
         {
           id: "o1",
@@ -105,7 +105,94 @@ describe("app.js", () => {
           name: "Ronald",
           age: 57,
         },
+        {
+          id: "o6",
+          name: "Grumpy",
+          age: 30,
+        },
       ]);
+    });
+  });
+  describe("GET /owners/:id/pets", () => {
+    test("GET 200: responds to the client with an array of all pets belonging to the owner matching the provided id", async () => {
+      const {
+        body: { pets },
+      } = await request(app).get("/api/owners/o1/pets").expect(200);
+      expect(pets).toEqual([
+        {
+          id: "p1",
+          name: "Alan Turin",
+          avatarUrl:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjOqKI0kZG7nIV2w7AFRWfPUGiqeM0J26TbCp8irR1jZiNG556",
+          favouriteFood: "Digestive Biscuits",
+          owner: "o1",
+          age: 10,
+          temperament: "aggressive",
+        },
+        {
+          id: "p4",
+          name: "Dunston",
+          avatarUrl:
+            "https://media.mnn.com/assets/images/2010/02/baby-orangutan.jpg.1000x0_q80_crop-smart.jpg",
+          favouriteFood: "Fish and Chips",
+          owner: "o1",
+          age: 4,
+          temperament: "aggressive",
+        },
+        {
+          id: "p11",
+          name: "Greg Attenborough",
+          avatarUrl:
+            "http://static.boredpanda.com/blog/wp-content/uuuploads/cute-baby-animals/cute-baby-animals-2.jpg",
+          favouriteFood: "Cucumber Sandwiches",
+          owner: "o1",
+          age: 12,
+          temperament: "passive",
+        },
+      ]);
+    });
+    test("GET 200: responds to the client with an array of all pets belonging to the owner matching the provided id despite casing", async () => {
+      const {
+        body: { pets },
+      } = await request(app).get("/api/owners/O1/pets").expect(200);
+      expect(pets).toEqual([
+        {
+          id: "p1",
+          name: "Alan Turin",
+          avatarUrl:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjOqKI0kZG7nIV2w7AFRWfPUGiqeM0J26TbCp8irR1jZiNG556",
+          favouriteFood: "Digestive Biscuits",
+          owner: "o1",
+          age: 10,
+          temperament: "aggressive",
+        },
+        {
+          id: "p4",
+          name: "Dunston",
+          avatarUrl:
+            "https://media.mnn.com/assets/images/2010/02/baby-orangutan.jpg.1000x0_q80_crop-smart.jpg",
+          favouriteFood: "Fish and Chips",
+          owner: "o1",
+          age: 4,
+          temperament: "aggressive",
+        },
+        {
+          id: "p11",
+          name: "Greg Attenborough",
+          avatarUrl:
+            "http://static.boredpanda.com/blog/wp-content/uuuploads/cute-baby-animals/cute-baby-animals-2.jpg",
+          favouriteFood: "Cucumber Sandwiches",
+          owner: "o1",
+          age: 12,
+          temperament: "passive",
+        },
+      ]);
+    });
+    test("GET 200: responds to the client with an empty pets array if no pets are found for the owner matching the provided id", async () => {
+      const {
+        body: { pets },
+      } = await request(app).get("/api/owners/o6/pets").expect(200);
+      expect(pets).toEqual([]);
     });
   });
 });
