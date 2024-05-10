@@ -35,6 +35,24 @@ exports.getOwners = async (request, response, next) => {
 
 exports.getOwnerPetsById = async (request, response, next) => {
   const id = request.params.id.toLowerCase();
-  const pets = await fetchOwnerPetsById(id);
-  response.status(200).send({ pets });
+
+  if (!/^o{1}[0-9]+$/.test(id)) {
+    next({
+      status: 400,
+      message: "Invalid ID",
+    });
+  }
+
+  try {
+    const [pets] = await Promise.all([
+      fetchOwnerPetsById(id),
+      fetchFileById("owners", id),
+    ]);
+    response.status(200).send({ pets });
+  } catch (error) {
+    next({
+      status: 404,
+      message: "No owner matching the provided ID",
+    });
+  }
 };

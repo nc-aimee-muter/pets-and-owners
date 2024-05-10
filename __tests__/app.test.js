@@ -5,7 +5,7 @@ const { makeRainbow, styleError } = require("../index");
 const endpointsData = require("../endpoints.json");
 const app = require("../app");
 
-const numberOfTests = 10;
+const numberOfTests = 12;
 let numberOfRefreshes = 0;
 
 beforeEach(async () => {
@@ -193,6 +193,18 @@ describe("app.js", () => {
         body: { pets },
       } = await request(app).get("/api/owners/o6/pets").expect(200);
       expect(pets).toEqual([]);
+    });
+    test("GET 404: responds to the client with an error message if the id is valid but not found", async () => {
+      const {
+        body: { message },
+      } = await request(app).get("/api/owners/o100/pets").expect(404);
+      expect(message).toBe("No owner matching the provided ID");
+    });
+    test("GET 400: responds to the client with an error message if the id is invalid", async () => {
+      const {
+        body: { message },
+      } = await request(app).get("/api/owners/owner1/pets").expect(400);
+      expect(message).toBe("Invalid ID");
     });
   });
 });
