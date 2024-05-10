@@ -5,13 +5,18 @@ const {
   allOtherEndpoints,
   getApiInfo,
 } = require("./controllers/api-controllers");
-const { getOwnerById, getOwners } = require("./controllers/owners-controllers");
+const {
+  getOwnerById,
+  getOwners,
+  getOwnerPetsById,
+} = require("./controllers/owners-controllers");
 const { handleErrors, handleServerErrors } = require("./error-handling");
 
 app.get("/api", getApiInfo);
 
 app.get("/api/owners/:id", getOwnerById);
-app.get("/owners", getOwners);
+app.get("/api/owners", getOwners);
+app.get("/api/owners/:id/pets", getOwnerPetsById);
 
 app.all("*", allOtherEndpoints);
 

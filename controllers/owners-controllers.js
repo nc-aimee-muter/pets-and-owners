@@ -1,4 +1,8 @@
-const { fetchOwnerById, fetchOwners } = require("../models/owners-models");
+const {
+  fetchFileById,
+  fetchAllFileData,
+  fetchOwnerPetsById,
+} = require("../models/owners-models");
 
 exports.getOwnerById = async (request, response, next) => {
   const id = request.params.id.toLowerCase();
@@ -10,7 +14,7 @@ exports.getOwnerById = async (request, response, next) => {
   }
 
   try {
-    const owner = await fetchOwnerById(id);
+    const owner = await fetchFileById("owners", id);
     response.status(200).send({ owner });
   } catch (error) {
     next({
@@ -21,6 +25,16 @@ exports.getOwnerById = async (request, response, next) => {
 };
 
 exports.getOwners = async (request, response, next) => {
-  const owners = await fetchOwners();
-  response.status(200).send({ owners });
+  try {
+    const owners = await fetchAllFileData("owners");
+    response.status(200).send({ owners });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getOwnerPetsById = async (request, response, next) => {
+  const id = request.params.id.toLowerCase();
+  const pets = await fetchOwnerPetsById(id);
+  response.status(200).send({ pets });
 };
